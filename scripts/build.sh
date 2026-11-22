@@ -17,20 +17,23 @@ BUILD="$ROOT/build"
 APP="$BUILD/PhotoShuffler.app"
 OBJ="$BUILD/obj"
 SIGN_IDENTITY="${SIGN_IDENTITY:--}"
+# Minimum macOS, matching LSMinimumSystemVersion in Info.plist and Package.swift.
+# Without this, swiftc targets the build machine's macOS version.
+TARGET="$(uname -m)-apple-macos14.0"
 BUNDLE_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' Resources/Info.plist)"
 
 rm -rf "$APP" "$OBJ"
 mkdir -p "$OBJ" "$APP/Contents/MacOS"
 
 echo "Compiling ShufflerCore..."
-swiftc -O -swift-version 5 -parse-as-library \
+swiftc -O -swift-version 5 -target "$TARGET" -parse-as-library \
   -module-name ShufflerCore \
   -emit-module -emit-module-path "$OBJ/ShufflerCore.swiftmodule" \
   -emit-library -static -o "$OBJ/libShufflerCore.a" \
   Sources/ShufflerCore/*.swift
 
 echo "Compiling PhotoShuffler..."
-swiftc -O -swift-version 5 \
+swiftc -O -swift-version 5 -target "$TARGET" \
   -module-name PhotoShuffler \
   -I "$OBJ" -L "$OBJ" -lShufflerCore \
   -framework Photos \
