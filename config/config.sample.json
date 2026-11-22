@@ -1,0 +1,14 @@
+{
+  "albumName": "Apple TV Screensaver",
+  "albumSize": 150,
+  "nightsInAlbum": 3,
+  "includeVideos": false,
+  "buckets": {
+    "recent": { "share": 0.20, "windowDays": 30, "maxNights": 10 },
+    "onThisDate": { "share": 0.25, "windowDays": 14 },
+    "archive": { "share": 0.55 }
+  },
+  "cooldownDays": 21,
+  "minWeight": 0.05,
+  "seed": null
+}
